@@ -51,7 +51,7 @@ public class Comment {
     }
 
     private static String createId(String author, long now) {
-        return now + "t" + author;
+        return now + "t" + author.hashCode();
     }
 
     @Override

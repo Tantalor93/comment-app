@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -51,17 +52,21 @@ public class CommentsService {
         return commentsRepository.save(commentToCreate);
     }
 
+    public Optional<Comment> findComment(final String id) {
+        return commentsRepository.findById(id);
+    }
+
     public void upvote(final String id) {
         zSetOps.incrementScore(TOP_UPVOTED_COMMENTS_SET, id, 1.0);
         hashOps.increment("comments:" + id, "upvotes", 1);
     }
 
-    public List<Comment> getTopNUpvotedComments(final int n) {
+    public List<Comment> findTopNUpvotedComments(final int n) {
         final Set<String> ids = zSetOps.reverseRange(TOP_UPVOTED_COMMENTS_SET, 0, n - 1);
         return ids.stream().map(id -> commentsRepository.findById(id).get()).collect(Collectors.toList());
     }
 
-    public Iterable<Comment> getAllComments() {
+    public Iterable<Comment> findAllComments() {
         List<String> ids = listOps.range(COMMENTS_ORDER, 0, -1);
         ids.stream().map(id -> commentsRepository.findById(id).get()).collect(Collectors.toList());
         return ids.stream().map(id -> commentsRepository.findById(id).get()).collect(Collectors.toList());

@@ -21,28 +21,22 @@ public class Application implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        for (Comment comment : commentsService.getAllComments()) {
+        for (Comment comment : commentsService.findAllComments()) {
             commentsService.deleteComment(comment.getId());
         }
-        Comment myComment = commentsService.createComment("Obenky@gmail.com", "this my first comment");
+        final Comment myComment = commentsService.createComment("Obenky@gmail.com", "this my first comment");
         commentsService.createComment("Zuzi@seznam.cz", "mine too :)");
 
         commentsService.upvote(myComment.getId());
         commentsService.upvote(myComment.getId());
 
-        System.out.println(commentsService.getTopNUpvotedComments(10));
 
         commentsService.deleteComment(myComment.getId());
-        System.out.println(commentsService.getTopNUpvotedComments(10));
 
         commentsService.createComment("Petr@gmail.com", "Where is Obenky?");
         commentsService.createComment("Zuzi@seznam.cz", "Dunno");
-        Comment i_miss_him = commentsService.createComment("Petr@gmail.com", "I miss him");
+        final Comment i_miss_him = commentsService.createComment("Petr@gmail.com", "I miss him");
         commentsService.upvote(i_miss_him.getId());
         commentsService.createComment("Zuzi@seznam.cz", "me too :(");
-
-        System.out.println(commentsService.getTopNUpvotedComments(1));
-        System.out.println(commentsService.getAllComments());
-
     }
 }
