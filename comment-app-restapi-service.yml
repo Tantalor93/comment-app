@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: comment-app-restapi
+  labels:
+    app: comment-app
+    tier: backend
+    role: restapi
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: comment-app
+    tier: backend
+    role: restapi

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comment-app-deployment
+  labels:
+    app: comment-app
+    tier: backend
+    role: restapi
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: comment-app
+      tier: backend
+      role: restapi
+  template:
+    metadata:
+      labels:
+        app: comment-app
+        tier: backend
+        role: restapi
+    spec:
+      containers:
+      - name: comment-app-container
+        image: tantalor93/comment-app
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
